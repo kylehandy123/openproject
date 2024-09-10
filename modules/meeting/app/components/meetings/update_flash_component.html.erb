@@ -7,13 +7,14 @@
             full: @full,
             icon: @icon,
             scheme: @scheme,
+            dismiss_scheme: @dismiss_scheme,
             data: {
               singleton: true
             }
           )) do |component|
             component.with_action_button(
                 tag: :a,
-                href: meeting_path(@meeting),
+                href: meeting_path(@button_path_object), # TODO
                 data: { turbo: false },
                 size: :medium) { @button_message }
             @message
@@ -27,6 +28,7 @@
             full: @full,
             icon: @icon,
             scheme: @scheme,
+            dismiss_scheme: @dismiss_scheme,
             data: {
               singleton: true
             }
