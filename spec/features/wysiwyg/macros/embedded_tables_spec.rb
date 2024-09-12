@@ -28,7 +28,9 @@
 
 require "spec_helper"
 
-RSpec.describe "Wysiwyg embedded work package tables", :js do
+RSpec.describe "Wysiwyg embedded work package tables",
+               :js,
+               :with_cuprite do
   shared_let(:admin) { create(:admin) }
   shared_let(:type_task) { create(:type_task) }
   shared_let(:type_bug) { create(:type_bug) }
