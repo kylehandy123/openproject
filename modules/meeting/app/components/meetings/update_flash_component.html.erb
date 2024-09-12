@@ -1,42 +1,46 @@
-<%=
-  component_wrapper do
-    if @button
-      flex_layout do |flex|
-        flex.with_row(classes: "op-toast--wrapper") do
-          render(Primer::Alpha::Banner.new(
-            full: @full,
-            icon: @icon,
-            scheme: @scheme,
-            dismiss_scheme: @dismiss_scheme,
-            data: {
-              singleton: true
-            }
-          )) do |component|
-            component.with_action_button(
-                tag: :a,
-                href: meeting_path(@button_path_object), # TODO
-                data: { turbo: false },
-                size: :medium) { @button_message }
-            @message
-          end
-        end
-      end
-    else
-      flex_layout do |flex|
-        flex.with_row(classes: "op-toast--wrapper") do
-          render(Primer::Alpha::Banner.new(
-            full: @full,
-            icon: @icon,
-            scheme: @scheme,
-            dismiss_scheme: @dismiss_scheme,
-            data: {
-              singleton: true
-            }
-          )) do
-            @message
-          end
-        end
-      end
-    end
-  end
+<%#=
+<!--    flex_layout do |flex|-->
+<!--      flex.with_row(classes: @full ? "" : "custom-wrapper") do-->
+<!--        render(Primer::Alpha::Banner.new(-->
+<!--          full: @full,-->
+<!--          icon: @icon,-->
+<!--          scheme: @scheme,-->
+<!--          dismiss_scheme: @dismiss_scheme,-->
+<!--          data: {-->
+<!--            singleton: true-->
+<!--          }-->
+<!--        )) do |component|-->
+<!--          if @button-->
+<!--            component.with_action_button(-->
+<!--                tag: :a,-->
+<!--                href: meeting_path(@button_path_object), # TODO-->
+<!--                data: { turbo: false },-->
+<!--                size: :medium) { @button_message }-->
+<!--          end-->
+<!--          @message-->
+<!--        end-->
+<!--      end-->
+<!--    end-->
 %>
+
+<%= render(Primer::ConditionalWrapper.new(condition: !@full, tag: :div, classes: "custom-wrapper")) do
+    render(Primer::Alpha::Banner.new(
+      full: @full,
+      icon: @icon,
+      scheme: @scheme,
+      dismiss_scheme: @dismiss_scheme,
+      data: {
+        singleton: true
+      }
+    )) do |component|
+      if @button
+        component.with_action_button(
+          tag: :a,
+          href: meeting_path(@button_path_object), # TODO
+          data: { turbo: false },
+          size: :medium) { @button_message }
+      end
+      @message
+    end
+end %>
+

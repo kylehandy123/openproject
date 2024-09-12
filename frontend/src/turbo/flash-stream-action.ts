@@ -2,7 +2,9 @@ import { StreamActions, StreamElement } from '@hotwired/turbo';
 
 export function registerFlashStreamAction() {
   StreamActions.flash = function dialogStreamAction(this:StreamElement) {
-    const content = this.templateElement.content;
-    document.body.append(content);
+    const template = this.templateElement.content;
+    // debugger;
+    const content = document.getElementById('flash-container') || document.body;
+    content.append(template);
   };
 }
