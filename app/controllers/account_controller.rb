@@ -439,12 +439,15 @@ class AccountController < ApplicationController
                                  show_user_name: true)
         else
           flash_and_log_invalid_credentials
+          render status: :unprocessable_entity
         end
       elsif user and user.invited?
         invited_account_not_activated(user)
+        render status: :unprocessable_entity
       else
         # incorrect password
         flash_and_log_invalid_credentials
+        render status: :unprocessable_entity
       end
     elsif user.new_record?
       onthefly_creation_failed(user, login: user.login, ldap_auth_source_id: user.ldap_auth_source_id)
@@ -481,7 +484,7 @@ class AccountController < ApplicationController
   def onthefly_creation_failed(user, auth_source_options = {})
     @user = user
     session[:auth_source_registration] = auth_source_options unless auth_source_options.empty?
-    render action: "register"
+    render action: "register", status: :unprocessable_entity
   end
 
   def self_registration_disabled
