@@ -38,19 +38,19 @@ class EnterpriseToken < ApplicationRecord
     end
 
     def allows_to?(action)
-      Authorization::EnterpriseService.new(current).call(action).result
+      true
     end
 
     def active?
-      current && !current.expired?
+      true
     end
 
     def show_banners?
-      OpenProject::Configuration.ee_manager_visible? && !active?
+      false
     end
 
     def set_current_token
-      token = EnterpriseToken.order(Arel.sql("created_at DESC")).first
+      token = EnterpriseToken.order(Arel.sql('created_at DESC')).first
 
       if token&.token_object
         token
@@ -84,7 +84,7 @@ class EnterpriseToken < ApplicationRecord
   end
 
   def allows_to?(action)
-    Authorization::EnterpriseService.new(self).call(action).result
+    true
   end
 
   def unset_current_token
@@ -93,15 +93,13 @@ class EnterpriseToken < ApplicationRecord
   end
 
   def expired?(reprieve: true)
-    token_object.expired?(reprieve:) || invalid_domain?
+    false
   end
 
   ##
   # The domain is only validated for tokens from version 2.0 onwards.
   def invalid_domain?
-    return false unless token_object&.validate_domain?
-
-    !token_object.valid_domain?(Setting.host_name)
+    false
   end
 
   private
